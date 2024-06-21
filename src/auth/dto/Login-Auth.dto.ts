@@ -8,7 +8,7 @@ export class LoginAuthDto {
      *  Email será usado para fazer login
      *  @example email@email.com
      */
-  @IsNotEmpty({ message: 'O campo EMAIL não pode ser vazio' })
+  @IsNotEmpty({ message: 'O campo EMAIL não pode ser vazio.' })
   @IsEmail({}, { message: 'Email inválido.' })
   email: string;
 
