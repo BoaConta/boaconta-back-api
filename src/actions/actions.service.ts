@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreateActionDto } from './dto/create-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Action, ActionDocument } from './schema/action.schema';
 
 @Injectable()
 export class ActionsService {
+  constructor(@InjectModel('Action') private actionModel: Model<ActionDocument>) {}
+
   create(createActionDto: CreateActionDto) {
-    return 'This action adds a new action';
+    const newAction = new this.actionModel(createActionDto);
+    return newAction.save();
   }
 
   findAll() {
-    return `This action returns all actions`;
+    console.log('teste')
+    return this.actionModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} action`;
+  findOne(id: string) {
+    return this.actionModel.findById(id);
   }
 
-  update(id: number, updateActionDto: UpdateActionDto) {
-    return `This action updates a #${id} action`;
+  update(id: string, updateActionDto: UpdateActionDto) {
+    return this.actionModel.findByIdAndUpdate(id, updateActionDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} action`;
+  remove(id: string) {
+    return this.actionModel.findByIdAndDelete(id);
   }
 }
