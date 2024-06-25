@@ -10,6 +10,7 @@ import { jwtConstants } from './jwt/constants';
 import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/user/schema/user.schema';
+import { GoogleStrategy } from './google/GoogleStrategy';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { User, UserSchema } from 'src/user/schema/user.schema';
     })
   ] ,
   controllers: [AuthController],
-  providers: [JwtStrategy,AuthService],
+  providers: [JwtStrategy,AuthService,GoogleStrategy],
   exports: [AuthService]
 })
 export class AuthModule {}
