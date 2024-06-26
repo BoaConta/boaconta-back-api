@@ -3,8 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ActionsModule } from './actions/actions.module';
 import { AuthModule } from './auth/auth.module';
-
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 
