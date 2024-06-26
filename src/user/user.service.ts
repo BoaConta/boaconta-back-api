@@ -13,8 +13,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-
- async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const data = await this.userModel.findOne({email:createUserDto.email})
     if(data){
       throw new ConflictException('Email já cadastrado!')
@@ -32,15 +31,15 @@ export class UserService {
     return this.userModel.find();
   }   
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} user`;
+  // }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-   }
+  // remove(id: number) {
+  //   return `This action removes a #${id} user`;
+  //  }
 }
