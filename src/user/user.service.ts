@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException, HttpStatus, HttpException} from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './entities/user.entity'
+import { User } from './schema/user.schema';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -11,8 +15,17 @@ export class UserService {
 
 
  async create(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
-    await createdUser.save();
+    const data = await this.userModel.findOne({email:createUserDto.email})
+    if(data){
+      throw new ConflictException('Email já cadastrado!')
+    }
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(createUserDto.password, salt);
+    createUserDto.password = passwordHash;
+
+    await new this.userModel(createUserDto).save();
+    throw new HttpException('Usuario cadastrado!', HttpStatus.CREATED)
   }
 
   async findAll(): Promise<User[]> {
