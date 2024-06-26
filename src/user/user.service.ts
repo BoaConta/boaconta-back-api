@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schema/user.schema';
@@ -10,9 +10,14 @@ export class UserService {
    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
 
- async create(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
-    await createdUser.save();
+  async create(createUserDto: CreateUserDto) {
+    const data = await this.userModel.findOne({email:createUserDto.email})
+    if(data){
+      throw new ConflictException('Email já cadastrado!')
+    }
+
+    await new this.userModel(createUserDto).save();
+    throw new HttpException('Usuario cadastrado!', HttpStatus.CREATED)
   }
 
   async findAll(): Promise<User[]> {
