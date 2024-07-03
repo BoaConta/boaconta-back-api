@@ -24,7 +24,7 @@ export class UserService {
     createUserDto.password = passwordHash;
 
     await new this.userModel(createUserDto).save();
-    throw new HttpException('Usuario cadastrado!', HttpStatus.CREATED)
+    throw new HttpException(`Usuario ${createUserDto.name} cadastrado!`, HttpStatus.CREATED)
   }
 
   async findAll(): Promise<User[]> {
