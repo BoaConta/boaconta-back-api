@@ -1,19 +1,30 @@
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable, ConflictException, HttpStatus, HttpException} from '@nestjs/common';
 
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schema/user.schema';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
    constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
+  async create(createUserDto: CreateUserDto) {
+    const data = await this.userModel.findOne({email:createUserDto.email})
+    if(data){
+      throw new ConflictException('Email já cadastrado!')
+    }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createUser = new this.userModel(createUserDto)
-    return createUser.save() ;
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(createUserDto.password, salt);
+    createUserDto.password = passwordHash;
+
+    await new this.userModel(createUserDto).save();
+    throw new HttpException('Usuario cadastrado!', HttpStatus.CREATED)
   }
 
   async findAll(): Promise<User[]> {
@@ -31,5 +42,4 @@ export class UserService {
   // remove(id: number) {
   //   return `This action removes a #${id} user`;
   //  }
-
 }
