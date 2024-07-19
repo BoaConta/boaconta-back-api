@@ -13,21 +13,20 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
             scope: ['email', 'profile']
         });
     }
-        /** WAITING FOR findOne TO BE IMPLEMENTED
+        /** WAITING FOR findOne TO BE IMPLEMENTED 
         async validate(accessToken: string, refreshToken: string, profile: Profile) {
         const { id, name, emails, photos } = profile
         const user = await userService.findOne(id) 
         if (!user) {
             const newUser = {
-                email: emails[0].value,
-                firstName: name.givenName,
-                lastName: name.familyName,
-                picture: photos[0].value,
+                email: profile.emails,
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
                 accessToken
             }
             await userService.create(newUser)
-            return newUser
+            return accessToken
         }
         return user
-        */
+        */      
 }
