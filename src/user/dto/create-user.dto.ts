@@ -21,7 +21,7 @@ export class CreateUserDto {
    * O campo email precisa conter entre 8 a 25, caracteres contendo Letra e Numero
    * @example us3r1234s
    */
-  @IsNotEmpty()
+  @IsNotEmpty({message: 'O campo senha não pode estar vazio!' })
   @IsAlphanumeric('pt-BR', {message: 'A senha só pode conter letras e numeros!'})
   @Length(8, 60, {message:'A senha precisa conter entre 8 e 25'})
   password: string;
