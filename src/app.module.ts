@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { ActionsModule } from './actions/actions.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TransactionModule } from './transaction/transaction.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -23,7 +24,8 @@ import * as Joi from 'joi';
         JWT_SECRET: Joi.string().required(),
         DATABASE: Joi.string().required()
       })
-    })
+    }),
+    TransactionModule
   ]
 })
 export class AppModule {}
