@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 
 @Module({
-  imports: [UserModule, ActionsModule, AuthModule, 
+  imports: [UserModule, ActionsModule, AuthModule, ConfigModule.forRoot(), 
     MongooseModule.forRootAsync({
       imports:[ConfigModule],
       useFactory: async (configService: ConfigService) => ({
